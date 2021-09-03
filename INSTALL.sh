@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/bash
 
 function die
 {
@@ -79,22 +79,22 @@ find -name "*.tar.gz" -exec tar -xzf {} ';' > /dev/null
 echo "Step 2 - Building libraries"
 echo " [+] Building and installing [IP-Country]"
 cd $temp_dir
-cd IP*
+cd $(find . -maxdepth 1 -type d -printf '%f\n' | awk '$1~/^IP/{print }')
 
-#perl Makefile.pl > /etc || die "Step 2" 
+perl Makefile.PL > /etc || die "Step 2" 
 make > /dev/null || die "Step 2" 
 make install > /dev/null || die "Step 2" 
 
 cd $temp_dir
-cd G*
+cd $(find . -maxdepth 1 -type d -printf '%f\n' | awk '$1~/^G/{print }')
 
 echo " [+] Building and installing [Geography-Countries]"
-#perl Makefile.pl > /etc || die "Step 2" 
+perl Makefile.pl > /etc || die "Step 2" 
 make > /dev/null || die "Step 2" 
 make install > /dev/null || die "Step 2" 
 
 cd $temp_dir
-cd Zope*
+cd $(find . -maxdepth 1 -type d -printf '%f\n' | awk '$1~/^Zope/{print }')
 
 echo " [+] Building and installing [Zope Interfaces]"
 python setup.py build > /dev/null || die "Step 2" 
